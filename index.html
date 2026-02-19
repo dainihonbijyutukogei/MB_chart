@@ -425,9 +425,8 @@ function showResultAnimated(resultEl, html, nodeId, node) {
       // 共有用URL：index.html を明示し、キャッシュ破壊クエリを付ける
       var origin = location.origin;
       var basePath = location.pathname.replace(/\/$/, ''); // 末尾/を削除
-      var canonical = origin + basePath + "/index.html";
-      var sharePageUrl = canonical + "?v=6"; // 必要に応じて数字を上げてOK
-
+      var sharePageUrl = origin + basePath + "/index.html?v=11";
+      
       var text = [titleLine, "", myResult, callTo, "", sharePageUrl].join("\n");
       var intent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
       window.open(intent, "_blank", "noopener,noreferrer");
@@ -459,3 +458,4 @@ if (document.readyState === "loading") {
 </body>
 
 </html>
+

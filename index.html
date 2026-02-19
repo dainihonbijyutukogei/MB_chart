@@ -429,7 +429,7 @@ function showResultAnimated(resultEl, html, nodeId, node) {
       var sharePageUrl = origin + basePath + "/index.html?v=12";
       
       var text = [titleLine, "", myResult, callTo, "", sharePageUrl].join("\n");
-      var intent = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(text);
+      var intent = "https://x.com/intent/post?text=" + encodeURIComponent(text);
       window.open(intent, "_blank", "noopener,noreferrer");
     });
   }
@@ -459,6 +459,7 @@ if (document.readyState === "loading") {
 </body>
 
 </html>
+
 
 
 

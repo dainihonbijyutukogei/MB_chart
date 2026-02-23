@@ -405,45 +405,31 @@ function escapeHTML(s) {
 }
 
 /* ========= 結果アニメ & イベント付与 ========= */
+
 function showResultAnimated(resultEl, html, nodeId, node) {
   var reduce = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
+  // 結果HTMLを差し込み＆表示
   resultEl.innerHTML = html;
   resultEl.style.display = "block";
 
-  // 「結果を共有」：指定の改行レイアウト＋安定URL（index.html 明示＋クエリ付き）
-  
-var shareBtn = resultEl.querySelector(".share-btn");
-if (shareBtn) {
-  shareBtn.addEventListener("click", function () {
-    var letter = extractResultLetter(nodeId);
+  // 「結果を共有」ボタン：絶対URL（固定）で安全に共有
+  var shareBtn = resultEl.querySelector(".share-btn");
+  if (shareBtn) {
+    shareBtn.addEventListener("click", function () {
+      var letter = extractResultLetter(nodeId);
+      var titleLine = "マイメリブルー色選びチャート";
+      var myResult  = "私の結果は〔" + letter + "〕でした";
+      var callTo    = "あなたの結果は・・？👇";
+      var sharePageUrl = "https://dainihonbijyutukogei.github.io/MB_chart/index.html?v=12";
 
-    // 本文（改行＆空行を含める）
-    var titleLine = "マイメリブルー色選びチャート";
-    var myResult  = "私の結果は〔" + letter + "〕でした";
-    var callTo    = "あなたの結果は・・？👇";
-
-    // 共有用URL：常に正しく index.html を指す
-    // 1) URL APIで現在ページを基準に安全解決（推奨）
-    var sharePageUrl = new URL("index.html?v=12", location.href).href;
-
-    // 2) 念のための追加保険：
-    //    万一 index.html/index.html になってしまう環境でも正規化
-    sharePageUrl = sharePageUrl
-      .replace(/index\.html\/+index\.html(\?)/, "index.html$1")  // /index.html/index.html? → /index.html?
-      .replace(/index\.html\/+$/, "index.html");                  // /index.html/ → /index.html
-
-    // 3) それでも不安なら、ハードコード版に切り替え（必要時のみオン）
-    //    ※ 通常は不要。万一おかしい時に下の1行のコメントを外して使う。
-    // sharePageUrl = "https://dainihonbijyutukogei.github.io/MB_chart/index.html?v=12";
-      
       var text = [titleLine, "", myResult, callTo, "", sharePageUrl].join("\n");
       var intent = "https://x.com/intent/post?text=" + encodeURIComponent(text);
       window.open(intent, "_blank", "noopener,noreferrer");
     });
   }
 
-  // 「Xに戻る」
+  // 「Xに戻る」ボタン
   var backBtn = resultEl.querySelector(".back-to-x-btn");
   if (backBtn) {
     backBtn.addEventListener("click", function(){
@@ -451,6 +437,7 @@ if (shareBtn) {
     });
   }
 
+  // アニメ制御
   if (reduce) {
     resultEl.classList.add("show");
     return;
@@ -468,6 +455,7 @@ if (document.readyState === "loading") {
 </body>
 
 </html>
+
 
 
 

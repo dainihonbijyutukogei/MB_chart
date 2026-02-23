@@ -423,10 +423,14 @@ function showResultAnimated(resultEl, html, nodeId, node) {
       var myResult  = "私の結果は〔" + letter + "〕でした";
       var callTo    = "あなたの結果は・・？👇";
 
-      // 共有用URL：index.html を明示し、キャッシュ破壊クエリを付ける
-      var origin = location.origin;
-      var basePath = location.pathname.replace(/\/$/, ''); // 末尾/を削除
-      var sharePageUrl = origin + basePath + "/index.html?v=12";
+-       // 共有用URL：index.html を明示し、キャッシュ破壊クエリを付ける
+-       var origin = location.origin;
+-       var basePath = location.pathname.replace(/\/$/, ''); // 末尾/を削除
+-       var sharePageUrl = origin + basePath + "/index.html?v=12";
++       // 共有用URL：常に正しく index.html を指すようにする（new URL を使う）
++       /* English: Use the URL API to safely resolve "index.html?v=12" relative to the current page.
++          日本語訳: 現在のページを基準に 'index.html?v=12' を安全に解決するために URL API を使います。 */
++       var sharePageUrl = new URL("index.html?v=12", location.href).href;
       
       var text = [titleLine, "", myResult, callTo, "", sharePageUrl].join("\n");
       var intent = "https://x.com/intent/post?text=" + encodeURIComponent(text);
@@ -459,6 +463,7 @@ if (document.readyState === "loading") {
 </body>
 
 </html>
+
 
 
 

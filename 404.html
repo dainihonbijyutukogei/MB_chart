@@ -1,1 +1,69 @@
+<404.html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting…</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- English: If JS is disabled, show a simple message. (No auto-redirect)
+       日本語訳: JS が無効な場合の簡易表示（自動転送はされません） -->
+  <style>
+    body { font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Hiragino Sans","Noto Sans JP",sans-serif; padding: 24px; line-height: 1.6; }
+    .card { max-width: 720px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,.06); }
+  </style>
+  <script>
+    (function () {
+      // English: Original path and query/hash
+      // 日本語訳: 元のパスとクエリ/ハッシュ
+      var p = location.pathname;
+      var q = location.search || "";
+      var h = location.hash || "";
 
+      // English: Normalize duplicated "index.html" segments
+      // 日本語訳: 重複した "index.html" を正規化して 1 個にする
+      // 例: /MB_chart/index.html/index.html  → /MB_chart/index.html
+      var fixed = p.replace(/(index\.html\/)+index\.html$/, "index.html");
+
+      // English: If nothing changed, also try removing trailing slashes
+      // 日本語訳: 変化がない場合は末尾のスラッシュ整理も試す
+      if (fixed === p) {
+        fixed = p.replace(/\/+$/, "");
+      }
+
+      // English: If path points to directory-like ".../index.html/..." collapse it
+      // 日本語訳: ディレクトリ風の ".../index.html/..." を詰める
+      fixed = fixed.replace(/index\.html\/+$/, "index.html");
+
+      // English: Only redirect when the fixed path differs AND it should land at your main page
+      // 日本語訳: 修正後のパスが変わった場合のみ、メインページへ転送
+      if (fixed !== p) {
+        location.replace(fixed + q + h);
+        return;
+      }
+
+      // English: As a fallback, if the path clearly contains duplicated "index.html", force to your main page
+      // 日本語訳: 最終手段として重複が明らかな場合はメインページに転送
+      if (/index\.html\/index\.html/.test(p)) {
+        // MB_chart の直下の index.html に統一（クエリ・ハッシュ維持）
+        location.replace("/MB_chart/index.html" + q + h);
+        return;
+      }
+
+      // English: If we arrive here, show a link to home.
+      // 日本語訳: ここまで来たら、ホームへの案内だけ表示
+      document.addEventListener("DOMContentLoaded", function () {
+        var msg = document.getElementById("msg");
+        if (msg) msg.textContent = "ページが見つかりませんでした。ホームへ戻ります。";
+        var a = document.getElementById("home");
+        if (a) a.href = "/MB_chart/index.html";
+      });
+    })();
+  </script>
+</head>
+<body>
+  <div class="card">
+    <h1>Redirecting… / 404</h1>
+    <p id="msg">自動で移動しない場合は、下のリンクを押してください。</p>
+    <p><a id="home" href="/MB_chart/index.html">ホーム（MB_chart/index.html）へ戻る</a></p>
+  </div>
+</body>
+</html>
